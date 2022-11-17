@@ -14,8 +14,17 @@ import router from './router'
 // 引入pinia
 import pinia from './pinia'
 
+// 权限控制
+import './permission'
+
 // 引入svg图标注册脚本
 import 'virtual:svg-icons-register'
+
+//注册图标组件
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}
 
 // 注册全局组件
 import SvgIcon from './components/SvgIcon/index.vue'

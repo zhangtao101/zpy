@@ -11,12 +11,14 @@ export const useApp = defineStore('app', {
         title: '轨迹微云系统',
         authorization: getItem(TOKEN),
         sidebar: {
-            collapse: getItem(COLLAPSE),
+            collapse: getItem(COLLAPSE) !== null,
         },
         device: 'desktop',
     }),
     actions:{
         setCollapse(data) {
+            //转为boolean类型
+            data = !!data;
             this.sidebar.collapse = data
             setItem(COLLAPSE, data)
         },
@@ -33,6 +35,15 @@ export const useApp = defineStore('app', {
             useTags().clearAllTags()
             // 清空menus
             useMenus().setMenus([])
+        },
+        setToken(data) {
+            this.authorization = data
+            // 保存到localStorage
+            setItem(TOKEN, data)
+        },
+        initToken(data) {
+            this.clearToken()
+            this.setToken(data)
         },
     }
 })

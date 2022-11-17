@@ -5,7 +5,7 @@
       :class="{ collapse: collapse }"
       @click="handleToggleMenu"
   >
-
+    <Fold />
   </el-icon>
 </template>
 

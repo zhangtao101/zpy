@@ -4,6 +4,11 @@ import home from './modules/home'
 import dynamic from './modules/dynamic'
 import login from './modules/login'
 
+// 固定菜单
+export const fixedRoutes = [...home]
+// 动态菜单
+export const asyncRoutes = [...dynamic]
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -11,8 +16,8 @@ const router = createRouter({
             path: '/',
             redirect: 'home',
         },
-        ...home,
-        ...dynamic,
+        ...fixedRoutes,
+        ...asyncRoutes,
         ...login
     ],
     //实现路由跳转之后滚动条滚到顶部

@@ -45,10 +45,18 @@ import {
   ref,
   computed
 } from 'vue'
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { Login } from '@/api/login'
+import { useApp } from '@/pinia/modules/app'
+import { useAccount } from '@/pinia/modules/account'
+
 export default defineComponent({
   name: 'login',
   setup(){
     const { proxy: ctx } = getCurrentInstance()
+    const router = useRouter()
+
     const getRules = () =>({
       username: [
         {
@@ -91,13 +99,24 @@ export default defineComponent({
             async valid => {
               if (valid) {
                 state.loading = true
-                //登录业务
-                ctx.$message.success({
-                  message: '登录成功',
-                  duration: 1000
-                })
-                console.log(ctx.loginVO.username)
-                console.log(ctx.loginVO.password)
+
+                //请求登录
+                const { data , respCode } = await Login(state.loginVO)
+                if (respCode === '200'){
+
+                  ElMessage({
+                    message:'登录成功',
+                    type: 'success',
+                    duration: 1000
+                  })
+                  //登录成功跳转到主页
+                  router.push("/")
+                  //重置token
+                  useApp().initToken(data.accessToken)
+
+                  useAccount().setUserinfo(data.roleList)
+                  useAccount().setPermissionList(data.permissionList)
+                }
 
                 state.loading = false
               }

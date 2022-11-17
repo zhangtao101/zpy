@@ -7,13 +7,15 @@
 <script>
 import {
   defineComponent,
-    computed
+  computed
 } from 'vue'
 export default defineComponent({
   name: "Item",
   props: ['title', 'icon'],
+
   setup({ icon }){
     const isCustomSvg = computed(() => icon && icon.startsWith('icon-'))
+
     return {
       isCustomSvg
     }

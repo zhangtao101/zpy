@@ -1,13 +1,21 @@
 <template>
-  <div class="left">
+  <div
+      class="left"
+      :class="{ collapse: collapse, mobile: device === 'mobile' }"
+  >
     <logo />
-    <menus />
+    <menus :collapse="collapse" />
   </div>
-  <div class="mask"></div>
+  <div class="mask" @click="closeSidebar"></div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import {
+  defineComponent,
+  computed
+} from 'vue'
+import { storeToRefs } from 'pinia'
+import { useApp } from '@/pinia/modules/app'
 import Logo from './Logo.vue'
 import Menus from './Menus.vue'
 
@@ -18,7 +26,20 @@ export default defineComponent({
     Menus
   },
   setup(){
+    const appStore = useApp()
+    const { sidebar, device } = storeToRefs(appStore)
+    const { setCollapse } = appStore
+    const collapse = computed(() => sidebar.value.collapse)
 
+    const closeSidebar = () => {
+      setCollapse(true)
+    }
+
+    return {
+      collapse,
+      device,
+      closeSidebar,
+    }
   }
 })
 </script>
