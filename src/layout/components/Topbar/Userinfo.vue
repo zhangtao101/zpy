@@ -1,10 +1,7 @@
 <template>
   <el-dropdown trigger="hover">
     <div class="userinfo">
-        <template>
-          <i class="el-icon-user" />
-          admin
-        </template>
+      <img class="avatar" :src="sx"/>
     </div>
     <template #dropdown>
       <el-dropdown-menu>
@@ -20,11 +17,14 @@
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useApp } from '@/pinia/modules/app'
+import shuangxing from '@/assets/avatar/shuangxing.png'
 
 export default defineComponent({
   name: "Userinfo",
   setup(){
     const router = useRouter()
+
+    const sx = shuangxing;
 
     const logout = () => {
       useApp().clearToken()
@@ -32,7 +32,8 @@ export default defineComponent({
     }
 
     return {
-      logout
+      logout,
+      sx
     }
   }
 })

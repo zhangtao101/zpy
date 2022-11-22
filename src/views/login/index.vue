@@ -109,13 +109,12 @@ export default defineComponent({
                     type: 'success',
                     duration: 1000
                   })
+
                   //登录成功跳转到主页
                   router.push("/")
-                  //重置token
-                  useApp().initToken(data.accessToken)
 
-                  useAccount().setUserinfo(data.roleList)
-                  useAccount().setPermissionList(data.permissionList)
+                  //重置token
+                  useApp().initToken(data.accessToken,data.roleList,data.permissionList)
                 }
 
                 state.loading = false

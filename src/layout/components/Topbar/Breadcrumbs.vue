@@ -24,7 +24,6 @@ import { useLayoutsettings } from '@/pinia/modules/layoutSettings'
 import { storeToRefs } from 'pinia'
 import {
   defineComponent,
-  getCurrentInstance,
   computed,
   ref,
   watch,
@@ -34,7 +33,6 @@ import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup(props, { emit }) {
-    const { proxy } = getCurrentInstance()
     const { device } = storeToRefs(useApp())
     const router = useRouter()
     const route = router.currentRoute // 这里不使用useRoute获取当前路由，否则下面watch监听路由的时候会有警告

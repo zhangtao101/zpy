@@ -41,9 +41,11 @@ export const useApp = defineStore('app', {
             // 保存到localStorage
             setItem(TOKEN, data)
         },
-        initToken(data) {
+        initToken(data,data2,data3) {
             this.clearToken()
             this.setToken(data)
+            useAccount().setUserinfo(data2)
+            useAccount().setPermissionList(data3)
         },
     }
 })

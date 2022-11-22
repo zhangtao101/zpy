@@ -1,19 +1,89 @@
 <template>
-  <div class="tags-container">
+  <div class="tags-container" :class="{ hide: !isTagsbarShow }">
     <el-scrollbar
+        ref="scrollContainer"
+        :vertical="false"
         class="scroll-container"
+        @wheel.prevent="onScroll"
     >
+      <router-link
+          v-for="(tag, i) in tagList"
+          :key="tag.fullPath"
+          :to="tag"
+          :ref="el => setItemRef(i, el)"
+          custom
+          v-slot="{ navigate, isExactActive }"
+      >
+        <div
+            class="tags-item"
+            :class="isExactActive ? 'active' : ''"
+            @click="navigate"
+            @click.middle="closeTag(tag)"
+            @contextmenu.prevent="openMenu(tag, $event)"
+        >
+          <span class="title">{{ tag.title }}</span>
+
+          <el-icon
+              v-if="!isAffix(tag)"
+              class="el-icon-close"
+              @click.prevent.stop="closeTag(tag)"
+          >
+            <Close />
+          </el-icon>
+        </div>
+      </router-link>
     </el-scrollbar>
   </div>
+  <ul
+      v-show="visible"
+      :style="{ left: left + 'px', top: top + 'px' }"
+      class="contextmenu"
+  >
+    <li @click="refreshSelectedTag(selectedTag)">刷新当前</li>
+    <li v-if="!isAffix(selectedTag)" @click="closeTag(selectedTag)">
+      关闭当前
+    </li>
+    <li @click="closeOtherTags">关闭其他</li>
+    <li @click="closeLeftTags">关闭左侧</li>
+    <li @click="closeRightTags">关闭右侧</li>
+    <li @click="closeAllTags">关闭全部</li>
+  </ul>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import {
+  defineComponent,
+  getCurrentInstance,
+  computed
+} from 'vue'
+import { useTags } from './hooks/useTags'
+import { useContextMenu } from './hooks/useContextMenu'
+import { useLayoutsettings } from '@/pinia/modules/layoutSettings'
 
 export default defineComponent({
   name: 'Tagsbar',
+  mounted() {
+    const instance = getCurrentInstance()
+    instance.appContext.config.globalProperties.$tagsbar = this
+  },
   setup(){
+    const defaultSettings = useLayoutsettings()
+    const isTagsbarShow = computed(() => defaultSettings.tagsbar.isShow)
 
+    const tags = useTags()
+    const contextMenu = useContextMenu(tags.tagList)
+
+    const onScroll = e => {
+      tags.handleScroll(e)
+      contextMenu.closeMenu.value()
+    }
+
+    return{
+      isTagsbarShow,
+      onScroll,
+      ...tags,
+      ...contextMenu
+    }
   }
 })
 </script>

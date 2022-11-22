@@ -34,18 +34,26 @@ router.beforeEach(async to => {
 
     //读取本地浏览器存储中是否存在token 如果没有则返回到登录页面
     if (!window.localStorage[ TOKEN ]) {
-        return 'login'
+        return {
+            name: 'login',
+            query: {
+                redirect: to.fullPath, // redirect是指登录之后可以跳回到redirect指定的页面
+            },
+            replace: true,
+        }
     }else {
         const { userinfo } = useAccount()
+
+        // 生成菜单（如果你的项目有动态菜单，在此处会添加动态路由）
+        const { menus, generateMenus } = useMenus()
+
+        if (menus.length <= 0){
+            await generateMenus()
+            return to.fullPath
+        }
+
         //获取用户角色信息，根据角色判断权限
         if (!userinfo){
-            // 生成菜单（如果你的项目有动态菜单，在此处会添加动态路由）
-            const { menus, generateMenus } = useMenus()
-
-            if (menus.length <= 0){
-                await generateMenus()
-                return to.fullPath
-            }
             return true
         }else {
             return to.fullPath

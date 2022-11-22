@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import home from './modules/home'
 import dynamic from './modules/dynamic'
 import login from './modules/login'
+import redirect from './modules/redirect'
 
 // 固定菜单
 export const fixedRoutes = [...home]
@@ -17,7 +18,7 @@ const router = createRouter({
             redirect: 'home',
         },
         ...fixedRoutes,
-        ...asyncRoutes,
+        ...redirect,
         ...login
     ],
     //实现路由跳转之后滚动条滚到顶部

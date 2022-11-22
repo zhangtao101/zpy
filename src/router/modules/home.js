@@ -19,7 +19,7 @@ export default [
                 name: 'home',
                 component: Home,
                 meta: {
-                    title: '菜单',
+                    title: '主页',
                 },
             },
         ]
