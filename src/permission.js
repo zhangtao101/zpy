@@ -3,7 +3,6 @@ import { ElLoading } from 'element-plus'
 import { TOKEN } from './pinia/modules/app'
 import { nextTick } from 'vue'
 import { useApp } from './pinia/modules/app'
-import { useAccount } from '@/pinia/modules/account'
 import { useMenus } from './pinia/modules/menu'
 
 const getPageTitle = title => {
@@ -42,8 +41,6 @@ router.beforeEach(async to => {
             replace: true,
         }
     }else {
-        const { userinfo } = useAccount()
-
         // 生成菜单（如果你的项目有动态菜单，在此处会添加动态路由）
         const { menus, generateMenus } = useMenus()
 
@@ -52,12 +49,7 @@ router.beforeEach(async to => {
             return to.fullPath
         }
 
-        //获取用户角色信息，根据角色判断权限
-        if (!userinfo){
-            return true
-        }else {
-            return to.fullPath
-        }
+        return true
     }
 })
 

@@ -37,6 +37,7 @@ export default defineConfig({
     proxy: {
       '/trail': {
         target: 'http://eip.api.glead.apps:12001',
+        //target: 'http://127.0.0.1:12001',
         changeOrigin: true,
         rewrite: path =>path.replace(/^\/trail/, ''),
       }

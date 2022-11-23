@@ -49,12 +49,10 @@ import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { Login } from '@/api/login'
 import { useApp } from '@/pinia/modules/app'
-import { useAccount } from '@/pinia/modules/account'
 
 export default defineComponent({
   name: 'login',
   setup(){
-    const { proxy: ctx } = getCurrentInstance()
     const router = useRouter()
 
     const getRules = () =>({

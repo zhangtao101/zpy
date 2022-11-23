@@ -16,7 +16,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const symbolId = computed(() => `#icon-${props.name}`)
+    const symbolId = computed(() => `#${props.name}`)
     return { symbolId }
   },
 })
