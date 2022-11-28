@@ -13,6 +13,7 @@ service.interceptors.request.use(
     config => {
         const { authorization } = useApp()
         if (authorization) {
+            // @ts-ignore
             config.headers.Authorization = `Bearer ${authorization}`
         }
         return config

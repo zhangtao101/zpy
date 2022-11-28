@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <el-form class="form" :model="loginVO" :rules="rules" ref="loginForm">
+    <el-form class="form" :model="loginVO" :rules="rules" ref="ruleFormRef">
       <h1 class="title">轨迹微云系统</h1>
       <el-form-item prop="username">
         <el-input
@@ -27,7 +27,6 @@
             class="btn"
             type="primary"
             size="large"
-            @click="submit"
         >
           {{ btnText }}
         </el-button>
@@ -36,96 +35,68 @@
   </div>
 </template>
 
-<script>
-import {
-  defineComponent,
-  reactive,
-  toRefs,
-  ref,
-  computed
-} from 'vue'
-import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
-import { Login } from '@/api/login'
-import { useApp } from '@/pinia/modules/app'
+<script lang="ts">
+  export default {
+    name: 'login'
+  };
+</script>
 
-export default defineComponent({
-  name: 'login',
-  setup(){
-    const router = useRouter()
+<script lang="ts" setup>
+import {reactive, ref, computed, toRefs} from 'vue'
+//import type { FormInstance, FormRules } from 'element-plus'
 
-    const getRules = () =>({
-      username: [
-        {
-          required: true,
-          message: "用户名不能为空",
-          trigger: 'blur'
-        },
-      ],
-      password: [
-        {
-          required: true,
-          message: "用户名不能为空",
-          trigger: 'blur'
-        },
-        {
-          min: 6,
-          max: 20,
-          message: "密码长度在6-20之间",
-          trigger: 'blur'
-        }
-      ]
-    })
+//const ruleFormRef = ref<FormInstance>()
 
-    const state = reactive({
-      loginVO: {
-        username: 'admin',
-        password: '123456'
-      },
-      rules: getRules(),
-      loading: false,
-      btnText: computed(() =>
-          state.loading ? '登录中' : '登录'
-      ),
-      loginForm: ref(null),
-      submit: () => {
-        if (state.loading){
-          return
-        }
-        state.loginForm.validate(
-            async valid => {
-              if (valid) {
-                state.loading = true
-
-                //请求登录
-                const { data , respCode } = await Login(state.loginVO)
-                if (respCode === '200'){
-
-                  ElMessage({
-                    message:'登录成功',
-                    type: 'success',
-                    duration: 1000
-                  })
-
-                  //登录成功跳转到主页
-                  router.push("/")
-
-                  //重置token
-                  useApp().initToken(data.accessToken,data.roleList,data.permissionList)
-                }
-
-                state.loading = false
-              }
-            }
-        )
-      }
-    })
-
-    return {
-      ...toRefs(state),
+/*const rules = reactive<FormRules>({
+  username: [
+    {
+      required: true,
+      message: "用户名不能为空",
+      trigger: 'blur'
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: "用户名不能为空",
+      trigger: 'blur'
+    },
+    {
+      min: 6,
+      max: 20,
+      message: "密码长度在6-20之间",
+      trigger: 'blur'
     }
-  }
+  ]
+})*/
+
+const state = reactive({
+  loginVO: {
+    username: 'admin',
+    password: '123456'
+  },
+  loading: false,
+  btnText: computed(() =>
+      state.loading ? '登录中' : '登录'
+  )
 })
+
+const {
+  loginVO,
+  loading,
+  btnText
+} = toRefs(state)
+
+/*const submitForm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      console.log('submit!')
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
+}*/
 </script>
 
 <style lang="scss" scoped>

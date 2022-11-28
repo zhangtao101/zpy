@@ -36,8 +36,10 @@ export const useTags = defineStore('tags', {
             setItem(TAGLIST, this.tagList)
 
             // 添加cacheList
+            // @ts-ignore
             if (this.cacheList.includes(name)) return
             if (!meta.noCache) {
+                // @ts-ignore
                 this.cacheList.push(name)
             }
         },

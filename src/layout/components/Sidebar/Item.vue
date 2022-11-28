@@ -1,24 +1,18 @@
 <template>
-  <svg-icon class="icon" v-if="isCustomSvg" :name="icon" />
-  <component :is="icon" v-else-if="!!icon" class="icon" />
+  <component :is="icon" class="icon" />
   <span>{{ title }}</span>
 </template>
 
 <script>
 import {
   defineComponent,
-  computed
 } from 'vue'
 export default defineComponent({
   name: "Item",
   props: ['title', 'icon'],
 
-  setup({ icon }){
-    const isCustomSvg = computed(() => icon && icon.startsWith('icon-'))
+  setup(){
 
-    return {
-      isCustomSvg
-    }
   }
 })
 </script>

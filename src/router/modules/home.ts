@@ -12,7 +12,7 @@ export default [
         meta: {
             title: '主页'
         },
-        icon: 'icon-home',
+        icon: 'HomeFilled',
         children: [
             {
                 path: '',
@@ -30,7 +30,7 @@ export default [
         meta: {
             title: '系统管理'
         },
-        icon: 'icon-home',
+        icon: 'Setting',
         children: [
             {
                 path: '/user',

@@ -30,6 +30,7 @@ export const useMenus = defineStore("menu",() =>{
                     route.children = getFilterRoutes(targetChildren, item.children)
                 }
 
+                // @ts-ignore
                 filterRoutes.push(route)
             }
         })
@@ -46,14 +47,17 @@ export const useMenus = defineStore("menu",() =>{
                     url: generateUrl(item.path, parentPath),
                     title: item.meta.title,
                     icon: item.icon,
+                    children: undefined
                 }
                 if (item.children) {
                     if (item.children.filter(child => !child.hidden).length <= 1) {
                         menu.url = generateUrl(item.children[0].path, menu.url)
                     } else {
+                        // @ts-ignore
                         menu.children = getFilterMenus(item.children, menu.url)
                     }
                 }
+                // @ts-ignore
                 menus.push(menu)
             }
         })
@@ -69,9 +73,9 @@ export const useMenus = defineStore("menu",() =>{
     const generateMenus = () => {
         const { permissionList } = useAccount()
         // 添加路由之前先删除所有动态路由
-        asyncRoutes.forEach(item => {
+/*        asyncRoutes.forEach(item => {
             router.removeRoute(item.name)
-        })
+        })*/
 
         // 过滤出需要添加的动态路由
         const filterRoutes = getFilterRoutes(asyncRoutes, permissionList)

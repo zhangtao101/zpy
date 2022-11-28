@@ -2,9 +2,12 @@
   "compilerOptions": {
     "compilerOptions": {
       "types": [
-        "node",
-        "element-plus/global"
+        "node"
       ]
+    },
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
     },
     "noImplicitAny": false,
     "target": "ESNext",

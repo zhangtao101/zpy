@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
 // 登录接口
-export const Login = data => {
+export const page = data => {
     return request({
-        url: '/trail/uaa/login',
-        method: 'post',
+        url: '/trail/system/page',
+        method: 'get',
         data,
     })
 }
